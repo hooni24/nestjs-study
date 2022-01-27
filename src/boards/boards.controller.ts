@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { Board } from './board.model';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Board, BoardStatus } from './board.model';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 
@@ -32,6 +32,33 @@ export class BoardsController {
     @Body() createBoardDto: CreateBoardDto
   ): Board {
     return this.boardsService.createBoard(createBoardDto);
+  }
+
+  /**
+   * id로 게시물 찾기 
+   * @param id 찾을 게시물의 id
+   * @returns 찾은 게시물
+   */
+  @Get('/:id')
+  getBoardById(
+    @Param('id') id: string
+  ): Board {
+    return this.boardsService.getBoardById(id);
+  }
+
+  @Delete('/:id')
+  deleteBoardById(
+    @Param('id') id: string
+  ): void {
+    this.boardsService.deleteBoardById(id);
+  }
+
+  @Patch('/:id/status')
+  updateBoardStatus(
+    @Param('id') id: string,
+    @Body('status') status: BoardStatus
+  ): Board {
+    return this.boardsService.updateBoardStatus(id, status);
   }
 
 }

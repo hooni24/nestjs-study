@@ -33,4 +33,27 @@ export class BoardsService {
     return board;
   }
 
+  /**
+   * id로 게시물 하나 찾기
+   * @param id 찾을 게시물의 id
+   * @returns 찾은 게시물
+   */
+  getBoardById(id: string): Board {
+    return this.boards.find(b => b.id === id);
+  }
+
+  /**
+   * id로 게시물 하나 지우기
+   * @param id 삭제할 게시물 id
+   */
+  deleteBoardById(id: string): void {
+    this.boards = this.boards.filter(b => b.id !== id);
+  }
+
+  updateBoardStatus(id: string, status: BoardStatus): Board {
+    const board = this.getBoardById(id);
+    board.status = status;
+    return board;
+  }
+
 }
