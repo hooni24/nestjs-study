@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { Board } from './board.model';
 import { BoardsService } from './boards.service';
 
 @Controller('boards')
@@ -13,8 +14,8 @@ export class BoardsController {
    * 모든 게시물을 반환하는 엔드포인트.
    * @returns 모든 게시물
    */
-  @Get()
-  getAllBoard() {
+  @Get('/')
+  getAllBoard(): Board[] {
     return this.boardsService.getAllBoards();
   }
 
