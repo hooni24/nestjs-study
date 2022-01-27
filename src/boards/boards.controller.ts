@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Board } from './board.model';
 import { BoardsService } from './boards.service';
+import { CreateBoardDto } from './dto/create-board.dto';
 
 @Controller('boards')
 export class BoardsController {
@@ -27,10 +28,10 @@ export class BoardsController {
    */
   @Post()
   createBoard(
-    @Body('title') title: string,
-    @Body('description') description: string
+    // Body를 쌩으로 붙여놓으면 prop을 찾아서 자동으로 매핑된다.
+    @Body() createBoardDto: CreateBoardDto
   ): Board {
-    return this.boardsService.createBoard(title, description);
+    return this.boardsService.createBoard(createBoardDto);
   }
 
 }
