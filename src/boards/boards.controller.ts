@@ -22,20 +22,20 @@ export class BoardsController {
   //   return this.boardsService.getAllBoards();
   // }
 
-  // /**
-  //  * 게시물 생성하기
-  //  * @param title 게시물 제목
-  //  * @param description 게시물 내용
-  //  * @returns 생성된 게시물
-  //  */
-  // @Post()
-  // @UsePipes(ValidationPipe)
-  // createBoard(
-  //   // Body를 쌩으로 붙여놓으면 prop을 찾아서 자동으로 매핑된다.
-  //   @Body() createBoardDto: CreateBoardDto
-  // ): Board {
-  //   return this.boardsService.createBoard(createBoardDto);
-  // }
+  /**
+   * 게시물 생성하기
+   * @param title 게시물 제목
+   * @param description 게시물 내용
+   * @returns 생성된 게시물
+   */
+  @Post()
+  @UsePipes(ValidationPipe)
+  createBoard(
+    // Body를 쌩으로 붙여놓으면 prop을 찾아서 자동으로 매핑된다.
+    @Body() createBoardDto: CreateBoardDto
+  ): Promise<Board> {
+    return this.boardsService.createBoard(createBoardDto);
+  }
 
   /**
    * id로 게시물 찾기 

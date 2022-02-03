@@ -20,24 +20,15 @@ export class BoardsService {
   //   return this.boards;
   // }
 
-  // /**
-  //  * 새로운 게시물 작성
-  //  * @param title 게시물 제목
-  //  * @param description 게시물 내용
-  //  * @returns 생성된 게시물 객체
-  //  */
-  // createBoard(createBoardDto: CreateBoardDto): Board {
-  //   const { title, description } = createBoardDto;
-
-  //   const board: Board = {
-  //     id: uuid(),
-  //     title,
-  //     description,
-  //     status: BoardStatus.PUBLIC
-  //   };
-  //   this.boards.push(board);
-  //   return board;
-  // }
+  /**
+   * 새로운 게시물 작성
+   * @param title 게시물 제목
+   * @param description 게시물 내용
+   * @returns 생성된 게시물 객체
+   */
+  async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
+    return this.boardRepository.createBoard(createBoardDto);
+  }
 
   /**
    * id로 게시물 하나 찾기
