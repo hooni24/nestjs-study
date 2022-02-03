@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Board, BoardStatus } from './board.model';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
+import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe';
 
 @Controller('boards')
 export class BoardsController {
@@ -27,6 +28,7 @@ export class BoardsController {
    * @returns 생성된 게시물
    */
   @Post()
+  @UsePipes(ValidationPipe)
   createBoard(
     // Body를 쌩으로 붙여놓으면 prop을 찾아서 자동으로 매핑된다.
     @Body() createBoardDto: CreateBoardDto
@@ -56,7 +58,7 @@ export class BoardsController {
   @Patch('/:id/status')
   updateBoardStatus(
     @Param('id') id: string,
-    @Body('status') status: BoardStatus
+    @Body('status', BoardStatusValidationPipe) status: BoardStatus
   ): Board {
     return this.boardsService.updateBoardStatus(id, status);
   }
