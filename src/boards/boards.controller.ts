@@ -1,16 +1,17 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { BoardStatus } from './board-status.enum';
+import { Board } from './board.entity';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe';
 
 @Controller('boards')
 export class BoardsController {
-  // /* 
-  //   ts에서는 접근제한자 private을 붙여 생성자 인자로 선언하면
-  //   암묵적으로 프로퍼티로 선언되며 주입을 해 준다. (this의 필드로 넣어준다는 뜻)
-  // */
-  // constructor(private boardsService: BoardsService) { }
+  /* 
+    ts에서는 접근제한자 private을 붙여 생성자 인자로 선언하면
+    암묵적으로 프로퍼티로 선언되며 주입을 해 준다. (this의 필드로 넣어준다는 뜻)
+  */
+  constructor(private boardsService: BoardsService) { }
 
   // /**
   //  * 모든 게시물을 반환하는 엔드포인트.
@@ -36,17 +37,17 @@ export class BoardsController {
   //   return this.boardsService.createBoard(createBoardDto);
   // }
 
-  // /**
-  //  * id로 게시물 찾기 
-  //  * @param id 찾을 게시물의 id
-  //  * @returns 찾은 게시물
-  //  */
-  // @Get('/:id')
-  // getBoardById(
-  //   @Param('id') id: string
-  // ): Board {
-  //   return this.boardsService.getBoardById(id);
-  // }
+  /**
+   * id로 게시물 찾기 
+   * @param id 찾을 게시물의 id
+   * @returns 찾은 게시물
+   */
+  @Get('/:id')
+  getBoardById(
+    @Param('id') id: number
+  ): Promise<Board> {
+    return this.boardsService.getBoardById(id);
+  }
 
   // @Delete('/:id')
   // deleteBoardById(

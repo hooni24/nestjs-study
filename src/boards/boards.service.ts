@@ -2,9 +2,18 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { BoardStatus } from './board-status.enum';
 import { v1 as uuid } from 'uuid';
 import { CreateBoardDto } from './dto/create-board.dto';
+import { BoardRepository } from './board.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Board } from './board.entity';
 
 @Injectable()
 export class BoardsService {
+
+  // Repository 클래스 DI
+  constructor(
+    @InjectRepository(BoardRepository)
+    private boardRepository: BoardRepository,
+  ) { }
 
   // // board모델을 만들었으니 타입을 선언해 준다.
   // getAllBoards(): Board[] {
@@ -30,18 +39,18 @@ export class BoardsService {
   //   return board;
   // }
 
-  // /**
-  //  * id로 게시물 하나 찾기
-  //  * @param id 찾을 게시물의 id
-  //  * @returns 찾은 게시물
-  //  */
-  // getBoardById(id: string): Board {
-  //   const found = this.boards.find(b => b.id === id);
-  //   if (!found) {
-  //     throw new NotFoundException('custom notfound message');
-  //   }
-  //   return found;
-  // }
+  /**
+   * id로 게시물 하나 찾기
+   * @param id 찾을 게시물의 id
+   * @returns 찾은 게시물
+   */
+  async getBoardById(id: number): Promise<Board> {
+    const found = await this.boardRepository.findOne(id);
+    if (!found) {
+      throw new NotFoundException(`Can't find board with id ${id}`);
+    }
+    return found;
+  }
 
   // /**
   //  * id로 게시물 하나 지우기
