@@ -15,10 +15,13 @@ export class BoardsService {
     private boardRepository: BoardRepository,
   ) { }
 
-  // // board모델을 만들었으니 타입을 선언해 준다.
-  // getAllBoards(): Board[] {
-  //   return this.boards;
-  // }
+  /**
+   * 전체 게시물 반환
+   * @returns 
+   */
+  async getAllBoards(): Promise<Board[]> {
+    return await this.boardRepository.find();
+  }
 
   /**
    * 새로운 게시물 작성
@@ -43,19 +46,28 @@ export class BoardsService {
     return found;
   }
 
-  // /**
-  //  * id로 게시물 하나 지우기
-  //  * @param id 삭제할 게시물 id
-  //  */
-  // deleteBoardById(id: string): void {
-  //   const found = this.getBoardById(id);
-  //   this.boards = this.boards.filter(b => b.id !== found.id);
-  // }
+  /**
+   * id로 게시물 하나 지우기
+   * @param id 삭제할 게시물 id
+   */
+  async deleteBoardById(id: number): Promise<void> {
+    const result = await this.boardRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Can't find Board with id ${id}`)
+    }
+  }
 
-  // updateBoardStatus(id: string, status: BoardStatus): Board {
-  //   const board = this.getBoardById(id);
-  //   board.status = status;
-  //   return board;
-  // }
+  /**
+   * id에 해당하는 게시물 status 변경하기
+   * @param id 
+   * @param status 
+   * @returns 
+   */
+  async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
+    const board = await this.getBoardById(id);
+    board.status = status;
+    await this.boardRepository.save(board);
+    return board;
+  }
 
 }
