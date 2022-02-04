@@ -1,0 +1,9 @@
+#process.env.NODE_ENV=production 인 경우 이 파일이 읽힘
+db:
+  host: 'localhost'
+  username: 'postgres'
+  password: 'postgres'
+  synchronize: false
+
+jwt:
+  secret: ''

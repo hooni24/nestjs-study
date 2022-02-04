@@ -2,19 +2,19 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { jwtConfig } from 'src/config/jwt.config';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategry } from './jwt.strategy';
 import { UserRepository } from './user.repository';
+import * as config from 'config';
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: jwtConfig.secret, // jwt에서 이용할 시크릿값. (노출되어선 안됨)
+      secret: process.env.JWT_SECRET || config.get('jwt.secret'), // jwt에서 이용할 시크릿값. (노출되어선 안됨)
       signOptions: {
-        expiresIn: 60 * 60  // 60초씩 60번 = 1시간
+        expiresIn: config.get('jwt.expiresIn')
       }
     }),
     // forFeature는 이 모듈 안에 등록한다는 뜻.

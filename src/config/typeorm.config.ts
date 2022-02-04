@@ -1,14 +1,19 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import * as config from 'config';
+
+const dbConfig = config.get('db');
+console.log(dbConfig);
 
 export const typeORMConfig: TypeOrmModuleOptions = {
-  type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: 'postgres',
-  database: 'board-app',
+  type: dbConfig.type,
+  host: process.env.RDS_HOSTNAME || dbConfig.host,
+  port: process.env.RDS_PORT || dbConfig.port,
+  username: process.env.RDS_USERNAME || dbConfig.username,
+  password: process.env.RDS_PASSWORD || dbConfig.password,
+  database: process.env.RDS_DATABASE || dbConfig.database,
+
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
 
-  // 매번 실행시 테이블 drop,create실행
-  synchronize: true
+  // 매번 실행시 테이블 drop,create실행여부
+  synchronize: dbConfig.synchronize
 }
